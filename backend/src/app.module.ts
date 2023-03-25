@@ -13,15 +13,17 @@ import { OffersModule } from './offers/offers.module';
 import { Offer } from './offers/entity/offer.entity';
 import configuration from 'configuration';
 
+console.log(configuration().database.username);
+
 @Module({
   imports: [
     ConfigModule.forRoot({ load: [configuration], isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
-      database: 'kupipodariday',
-      username: 'student',
-      password: 'student',
+      host: configuration().database.host,
+      database: configuration().database.name,
+      username: configuration().database.username,
+      password: configuration().database.password,
       entities: [User, Wish, Wishlist, Offer],
       synchronize: true,
       schema: 'public',

@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+  backend:
+    container_name: "kupipodariday-backend"
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    env_file: ./.env
+    restart: on-failure
+    ports:
+      - "3001:3001"
+    depends_on:
+      - postgres
+
+  postgres:
+    container_name: "kupipodariday-database"
+    image: postgres:12.12
+    restart: on-failure
+    env_file: ./.env
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+
+  frontend:
+    container_name: "kupipodariday-frontend"
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
