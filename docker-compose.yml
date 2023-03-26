@@ -9,13 +9,13 @@ services:
     env_file: ./.env
     restart: on-failure
     ports:
-      - "3001:3001"
+      - "4000:4000"
     depends_on:
       - postgres
 
   postgres:
     container_name: "kupipodariday-database"
-    image: postgres:12.12
+    image: postgres:12.12-alpine
     restart: on-failure
     env_file: ./.env
     environment:
@@ -24,13 +24,14 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
     volumes:
       - pgdata:/var/lib/postgresql/data
+
   frontend:
     container_name: "kupipodariday-frontend"
     build:
       context: frontend
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "81:80"
     depends_on:
       - backend
 volumes:
